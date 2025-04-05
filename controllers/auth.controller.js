@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import userModel from "../models/user.model.js";
-import {JWT_EXPIRATION, JWT_SECRET} from "../config/env.js";
+import {JWT_EXPIRES_IN, JWT_SECRET} from "../config/env.js";
 import jwt from "jsonwebtoken";
 import {createError} from "../utils/create.error.util.js";
 
@@ -14,7 +14,7 @@ export const registerUser = async (req, res, next) => {
         const {username,email,password,profileImage} = req.body;
         
         // Validate request body
-        if(!username || !email || !password){
+        if(!username && !email && !password){
             // const error = new Error("All fields are required");
             // error.statusCode = 400;
             // throw error;
@@ -47,10 +47,10 @@ export const registerUser = async (req, res, next) => {
         const hashedPassword = await bcrypt.hash(password, salt);
         
         // Create user
-        const newUsers = await userModel.create([{username,email,password:hashedPassword,profileImageUrl}],{session});
+        const newUsers = await userModel.create([{username,email,password:hashedPassword,profileImage:profileImageUrl}],{session});
         
         // return token
-        const token = jwt.sign({userId:newUsers[0]._id},JWT_SECRET,{expiresIn:JWT_EXPIRATION});
+        const token = jwt.sign({userId:newUsers[0]._id},JWT_SECRET,{expiresIn:JWT_EXPIRES_IN});
         
         await session.commitTransaction();
         session.endSession();
@@ -60,14 +60,15 @@ export const registerUser = async (req, res, next) => {
             message:"User registered successfully",
             data:{
                 token,
-                user:newUsers[0],
-                // user: {
-                //   id: newUsers[0]._id,
-                //   username: newUsers[0].username,
-                //   email: newUsers[0].email,
-                //   createdAt: newUsers[0].createdAt,
-                //   updatedAt: newUsers[0].updatedAt,
-                // },
+                // user:newUsers[0],
+                user: {
+                  id: newUsers[0]._id,
+                  username: newUsers[0].username,
+                  email: newUsers[0].email, 
+                    profileImage: newUsers[0].profileImage,
+                  createdAt: newUsers[0].createdAt,
+                  updatedAt: newUsers[0].updatedAt,
+                },
               
             }
         });
@@ -104,14 +105,22 @@ export const loginUser = async (req, res, next) => {
         }
 
         // return token
-        const token = jwt.sign({userId:existingUser._id},JWT_SECRET,{expiresIn:JWT_EXPIRATION});
+        const token = jwt.sign({userId:existingUser._id},JWT_SECRET,{expiresIn:JWT_EXPIRES_IN});
 
         res.status(200).json({
             success:true,
             message:"User logged in successfully",
             data:{
                 token,
-                user:existingUser,
+                // user:existingUser,
+                user:{
+                    id: existingUser._id,
+                    username: existingUser.username,
+                    email: existingUser.email,
+                    profileImage: existingUser.profileImage,
+                    createdAt: existingUser.createdAt,
+                    updatedAt: existingUser.updatedAt,
+                }
             }
         });
     }

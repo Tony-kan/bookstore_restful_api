@@ -18,10 +18,10 @@ app.use(errorMiddleware)
 app.use("/api/v1/auth", authRouter);
 
 
-
 app.get("/", (req, res) => {
   res.send("Welcome to bookstore API");
 });
+
 
 app.listen(PORT, async () => {
   // console.log(`Server is running on http://localhost:${PORT}`);
