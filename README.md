@@ -33,7 +33,7 @@ This is a RESTful API for a bookstore application built with Node.js and Express
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/Tony-kan/bookstore-api.git
+    git clone https://github.com/Tony-kan/bookstore_restful_api.git
     cd bookstore-api
     ```
 
