@@ -4,6 +4,7 @@ import userModel from "../models/user.model.js";
 import {JWT_EXPIRES_IN, JWT_SECRET} from "../config/env.js";
 import jwt from "jsonwebtoken";
 import {createError} from "../utils/create.error.util.js";
+import {logger} from "../utils/logger.util.js";
 
 
 export const registerUser = async (req, res, next) => {
@@ -130,4 +131,17 @@ export const loginUser = async (req, res, next) => {
 }
 
 
-export const logoutUser = async (req, res, next) => {}
+export const logoutUser = async (req, res, next) => {
+    try{
+        res.clearCookie("Authorization")
+            .status(200)
+            .json({
+                success:true,
+                message:"User logged out successfully",
+            })
+    }
+    catch (error){
+        logger.error(error);
+        next(error);
+    }
+}
