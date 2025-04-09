@@ -2,7 +2,7 @@
 
 
 // function to create abook in the db
-import {logger} from "../utils/logger.util.js";
+// import {logger} from "../utils/logger.util.js";
 import {createError} from "../utils/create.error.util.js";
 import cloudinary from "../config/cloudinary.js";
 import bookModel from "../models/book.model.js";
@@ -91,7 +91,7 @@ export const createBook = async (req, res,next) => {
         // }
     }
     catch (error) {
-        logger.error(error);
+        // logger.error(error);
         next(error);
     }
 }
@@ -130,7 +130,7 @@ export const updateBook = async (req, res,next) => {
         })
 
     }catch(error){
-        logger.error(error);
+        // logger.error(error);
         next(error);
     }
 }
@@ -154,7 +154,7 @@ export const deleteBook = async (req, res,next) => {
                const publicId = book.bookCover.split("/").pop().split(".")[0];
                await cloudinary.uploader.destroy(publicId);
            }catch(error){
-               logger.error(error);
+               // logger.error(error);
                next(error);
            }
        }
@@ -167,7 +167,7 @@ export const deleteBook = async (req, res,next) => {
         });
     }
     catch(error){
-        logger.error(error);
+        // logger.error(error);
         next(error);
     }
 }

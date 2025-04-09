@@ -1,7 +1,7 @@
 import {JWT_SECRET} from "../config/env.js";
 import jwt from "jsonwebtoken";
 import userModel from "../models/user.model.js";
-import {logger} from "../utils/logger.util.js";
+// import {logger} from "../utils/logger.util.js";
 
 
 export const authorize = async (req, res, next) => {
@@ -16,7 +16,7 @@ export const authorize = async (req, res, next) => {
         if (!token) return res.status(401).send({message: "Unauthorized : No token provided"});
 
         const decoded = jwt.verify(token, JWT_SECRET);
-        logger.info(`Decoded token: ${decoded}`);
+        // logger.info(`Decoded token: ${decoded}`);
 
         const user = await userModel.findById(decoded.userId);
 

@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { PORT } from "./config/env.js";
-import { logger } from "./utils/logger.util.js";
+// import { logger } from "./utils/logger.util.js";
 import { connectToDatabase } from "./database/mongodb.js";
 import authRouter from "./routes/auth.routes.js";
 import errorMiddleware from "./middlewares/error.middleware.js";
@@ -26,8 +26,8 @@ app.get("/", (req, res) => {
 
 
 app.listen(PORT, async () => {
-  // console.log(`Server is running on http://localhost:${PORT}`);
-  logger.info(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
+  // logger.info(`Server is running on http://localhost:${PORT}`);
   await connectToDatabase();
 });
 
